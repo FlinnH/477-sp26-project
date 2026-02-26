@@ -60,7 +60,7 @@ Both datasets share `title` and `release_date` as common attributes. Titles will
 
 ## Data Lifecycle
 
-This project follows the **USGS Science Data Lifecycle Model**:
+Our project will follow the **USGS Science Data Lifecycle Model** from our lecture due to its simplicity:
 
 - **Plan:** We together define the above research questions, identify datasets, outline roles, storage strategy, and ethical considerations.
 - **Acquire:** Download the Rotten Tomatoes CSV from r/datasets; fetch TMDB metadata via REST API using a Python script (`tmdb_data_script.ipynb`).
