@@ -2,9 +2,9 @@
 
 ## Overview
 
-Our project aims to investigate whether critic scores are a meaningful predictor of a movie's popularity, using two complementary datasets: a Rotten Tomatoes dataset containing critic scores sourced from r/datasets, and enriched movie metadata fetched from The Movie Database (TMDB) API. By integrating these two sources, we aim to determine **whether highly-rated films by critics tend to also be more popular with the general public — and where that relationship breaks down.**
+Film critics often influence how movies are marketed and perceived by the public, but it is not always clear whether critical acclaim can translate into a movie's success from the audience. Our project aims to investigate whether critic scores are a meaningful predictor of a movie's popularity, using two complementary datasets: a Rotten Tomatoes dataset containing critic scores sourced from r/datasets, and enriched movie metadata fetched from The Movie Database (TMDB) API. By integrating these two sources, we aim to analyze **the relationship between critic evaluations, audience ratings, and how the popularity meaure up.**
 
-Our approach follows a standard data engineering and analysis pipeline: we acquire and clean both datasets, normalize and merge them on movie `title` and `release year`, perform a thorough data quality assessment, and produce an integrated dataset suitable for exploratory analysis. The project is motivated by a practically relevant question — does critical acclaim translate to popularity? — which has implications for studios, streaming platforms, and audiences alike. All code, data, and documentation are managed through GitHub with a fully automated and reproducible workflow!
+To accomplish this goal, we will analyze two datasets: a **Rotten Tomato dataset** containing critic scores, and a **metadata from The Movie Database API that includes popularity metrics and vote counts.**  Our approach follows a standard data engineering and analysis pipeline. First, we will acquire and clean both datasets. Then, we normalize and merge them on movie `title` and `release year`. After performing a thorough data quality assessment producing an integrated dataset, we will conduct exploratory data analysis to investigate correlations and patterns. The project is motivated by a practically relevant question — does critical acclaim translate to popularity? — which has implications for studios, streaming platforms, and audiences alike. All code, data, and documentation are managed through GitHub with a fully automated and reproducible workflow!
 
 ---
 
@@ -13,7 +13,7 @@ Our approach follows a standard data engineering and analysis pipeline: we acqui
 | Member | Role & Responsibilities |
 |---|---|
 | Flynn Huynh - fhuynh2 | Data acquisition (Python scripting + API), data integration (Pandas merge), Git repository management |
-| Harlow Nguyen - harlown2 | Data quality assessment, workflow organization, documentation and report writing |
+| Harlow Nguyen - harlown2 | Data quality assessment, workflow organization, documentation, and report writing |
 
 > *Note:* Our individual contributions might **NOT BE FULLY** reflected in the Git commit history. We frequently working collaboratively on the same device.
 
@@ -24,7 +24,7 @@ Our approach follows a standard data engineering and analysis pipeline: we acqui
 1. **Is there a statistically meaningful correlation between a movie's critic score and its TMDB popularity score?**
 2. **Do critically acclaimed movies (high critic score) tend to have higher vote counts and popularity, or does popularity operate independently of critical reception?**
 
-These questions are directly answerable through the integration of the two datasets: Rotten Tomatoes provides the critic scores, while TMDB provides popularity scores and vote counts metadata.
+These questions are directly answerable through the integration of the two datasets: Rotten Tomatoes provides the critic scores, while TMDB provides popularity scores and vote counts metadata. By comparing critic evaluations with audience ratings, we aim to better understand whether professional reviews align with public interest. 
 
 ---
 
@@ -54,7 +54,13 @@ These questions are directly answerable through the integration of the two datas
 
 ### Integration Strategy
 
-Both datasets share `title` and `release_date` as common attributes. Titles will be normalized (lowercase, stripped of whitespace and punctuation) and release year extracted from both datasets to enable a reliable merge using `pandas.merge()`. A `title_clean` column will serve as the join key in both DataFrames, while original columns are retained for provenance purposes.
+The datasets share common attributes such as `title` and `release_date`, which will serve as the primary integration keys. To prepare the data for merging, we will:
+
+- Normalize movie titles by converting them to lowercase, remove whitespace and punctuation.
+- Extract release year from full release date in both datasets
+- Create a standardized `title_clean` column in both datasets
+
+The cleaned title and release year will then be used as join keys when merging the datasets using `pandas.merge()`. Original columns will be retained to preserve provenance and allow traceability back to the source datasets.
 
 ---
 
