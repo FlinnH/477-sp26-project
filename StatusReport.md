@@ -156,7 +156,7 @@ All technical milestones—including repository setup, data acquisition, cleanin
 | Data acquisition — RT | Load and inspect `movie_info.csv`, verify structure | March 22 | April 1 | Flynn | ✅ Done |
 | Data acquisition — TMDB | Run `tmdb_data_script.ipynb` to collect 700 matched records via API |  March 24 | April 1 | Flynn | ✅ Done |
 | Data cleaning | Parse dates, strip score formatting, handle missing values, normalize titles |  March 24 | April 1 | Flynn | ✅ Done |
-| Data integration | Merge datasets on `title_clean` + `release_year` | Flynn | March 30 | April 1 | ✅ Done |
+| Data integration | Merge datasets on `title_clean` + `release_year` | March 30 | April 1 | Flynn | ✅ Done |
 | Data quality assessment | Document completeness, duplicate rates, match rate, and outliers |  April 6 | April 30 | Harlow | ⏳ Pending |
 | Workflow documentation | Document end-to-end pipeline steps for reproducibility |  April 8 | May 1 | Harlow | ⏳ Pending |
 | Exploratory analysis | Correlation analysis, vote count distribution, decade-level trends | April 10 | May 2 | Both | ⏳ Pending |
