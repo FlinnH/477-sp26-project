@@ -51,5 +51,29 @@ python3 "$ROOT_DIR/scripts/integrate.py" --rt-clean "datasets/rt_clean.csv" --tm
   exit 1
 }
 
-echo "Step 5: Analysis not yet implemented in this skeleton."
-echo "Pipeline complete."
+echo "Step 5: Run exploratory analysis notebook"
+if command -v jupyter &> /dev/null; then
+  jupyter nbconvert \
+    --to notebook \
+    --execute \
+    --inplace \
+    --ExecutePreprocessor.timeout=300 \
+    "$ROOT_DIR/analysis.ipynb" || {
+    echo "ERROR: analysis notebook execution failed" >&2
+    exit 1
+  }
+  echo "  analysis.ipynb executed successfully."
+else
+  echo "  WARNING: jupyter not found — skipping notebook execution."
+  echo "  To run the analysis manually: jupyter notebook analysis.ipynb"
+fi
+ 
+echo ""
+echo "============================================"
+echo " Pipeline complete."
+echo " Output files:"
+echo "   datasets/rt_clean.csv"
+echo "   datasets/tmdb_clean.csv"
+echo "   datasets/merged_movies.csv"
+echo "   analysis.ipynb (executed in-place)"
+echo "============================================"
