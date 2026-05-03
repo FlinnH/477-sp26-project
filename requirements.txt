@@ -7,5 +7,5 @@ nbconvert
 seaborn
 matplotlib
 numpy
-scipy.stats
+scipy
 dataframe_image
