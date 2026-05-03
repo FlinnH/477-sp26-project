@@ -7,3 +7,4 @@ nbconvert
 seaborn
 matplotlib
 numpy
+scipy.stats
