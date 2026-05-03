@@ -323,8 +323,8 @@ Follow these steps to reproduce the full pipeline from a clean environment.
 ### Step 2: Clone the Repository
  
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
+git clone https://github.com/FlinnH/477-sp26-project.git IS477_proj
+cd IS477_proj
 ```
  
 ### Step 3: Set Up Python Environment
