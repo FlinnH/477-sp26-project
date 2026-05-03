@@ -273,21 +273,17 @@ In summary, critics matter for quality perception, but critics do not matter for
  
 ---
  
-## Future Work [**(Harlow - Ờm I lowkey need ur help here, please change or edit whatever sounds weird)**]
+## Future Work
 
 Future work could investigate the role of genre, release platform, marketing spend, and franchise status as moderating variables in the critic score–popularity relationship.
 
-This project represents a focused first pass at understanding the critic score–popularity relationship using a limited but clean dataset. Several directions would meaningfully extend its scope and rigor.
+Our project represents a focused first pass at understanding the critic score–popularity relationship using a limited but clean dataset. Several directions would meaningfully extend its scope and rigor.
  
-**Broader temporal coverage.** The most significant limitation is that the merged dataset covers only 1970–1973 films. This arose because `acquire_tmdb.py` iterates from the top of the RT dataset, which is chronologically sorted. A future iteration should either shuffle the RT titles before fetching, or target a stratified sample across decades, to produce a dataset spanning the full 1970–present range of the RT source. This would make decade-level trend analysis — one of our original research questions — actually feasible.
+**Broader temporal coverage.** The most significant limitation we noticed is that the merged dataset covers mostly 1970–1973 films. This arose because `acquire_tmdb.py` iterates from the top of the RT dataset, which is chronologically sorted. A future iteration should either shuffle the RT titles before fetching, or target a stratified sample across decades, to produce a dataset spanning the full 1970–present range of the RT source. This would make decade-level trend analysis — one of our original research questions — actually feasible.
  
 **Fuzzy title matching.** The current integration strategy uses exact normalized title matching, which fails for titles that differ in more substantive ways (e.g., foreign language versions, subtitles, or sequels with slight name variations). Implementing fuzzy matching using the `recordlinkage` library or Levenshtein distance would increase the match rate and reduce selection bias toward movies with clean, consistent naming.
  
-**Richer TMDB features.** The `/search/movie` endpoint returns only summary fields. The `/movie/{id}` detail endpoint provides budget, revenue, runtime, and spoken language data which would enable more sophisticated analysis — for example, whether big-budget films show a different critic–popularity relationship than low-budget ones.
- 
-**Formal statistical modeling.** The current scope is limited to exploratory correlation analysis. Future work could apply simple linear regression, controlling for confounders such as release decade, vote count (as a proxy for film visibility), and TMDB's `vote_average` to isolate the independent effect of critic scores on popularity.
- 
-**Genre-level analysis.** TMDB returns `genre_ids` as integer codes. With an additional lookup against the `/genre/movie/list` endpoint, genre labels could be decoded and used as a grouping variable to investigate whether the critic–popularity relationship differs systematically by genre (e.g., art films vs. blockbusters).
+**Richer TMDB features.** The `/search/movie` endpoint returns only summary fields. The `/movie/{id}` detail endpoint provides budget, revenue, runtime, and spoken language data, which would enable more sophisticated analysis — for example, whether big-budget films show a different critic–popularity relationship than low-budget ones.
  
 **Automated provenance logging.** Currently, provenance is captured through terminal print statements and documentation. A more rigorous approach would log input file checksums (SHA-256), row counts at each pipeline stage, and transformation decisions to a structured JSON log file, creating a machine-readable audit trail alongside the human-readable report.
  
@@ -405,7 +401,7 @@ datasets/
 - *Requests: HTTP for Humans*. [https://requests.readthedocs.io/](https://requests.readthedocs.io/)
 - *python-dotenv*. [https://github.com/theskumar/python-dotenv](https://github.com/theskumar/python-dotenv)
 - *tqdm: A Fast, Extensible Progress Bar*. [https://tqdm.github.io/](https://tqdm.github.io/)
+
 **Course Materials:**
- 
 - IS477: Data Management, Curation, and Reproducibility. School of Information Sciences, University of Illinois Urbana-Champaign.
 - USGS Science Data Lifecycle Model. U.S. Geological Survey. [https://www.usgs.gov/data-management/data-lifecycle](https://www.usgs.gov/data-management/data-lifecycle)
