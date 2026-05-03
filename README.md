@@ -203,36 +203,80 @@ After the inner merge, `integrate.py` performs a final `dropna()` to ensure the 
 ---
  
 ## Findings
- 
-[**Harlow — Của b tất nha 😃. Để cho tiện thì t tạo subsections ở dưới cho b fill in based on your EDA notebook results. BUT FEEL FREE TO CHANGE ANYTHING!**]
- 
-### Correlation Analysis
- 
-[**Add your Pearson/Spearman correlation results between `critic_score` and `popularity`, `vote_count`, and `vote_average` here. Include the correlation coefficients and p-values. Example format:**
- 
-> The Pearson correlation between `critic_score` and `popularity` was r = X.XX (p = X.XX), suggesting [a weak/moderate/strong] [positive/negative/no] relationship], bla bla
- 
+
+This section presents the results of the exploratory data analysis conducted on critic scores, audience scores, popularity, and vote averages. Visualizations and statistical correlation tests are used to evaluate whether critic assessments meaningfully relate to how films are received and consumed by general audiences.
+
+### Statistical Correlation Tests
+Table 1 reports both Pearson and Spearman correlation coefficients and their associated p-values for the relationship between critic score and each other variable.
+
+![Distributions](figures/corr_table.png)
+
+> Table 1. Pearson and Spearman correlation coefficients (r) and p-values (p) for critic score versus popularity, audience score, vote average, and vote count. Significant results (p < 0.05) indicate relationships unlikely to be due to chance.
+
+Audience score and vote average demonstrate the strongest and most reliable associations with critic score (Pearson r = 0.66 and 0.57, respectively; both p < 0.001). Vote count shows a weaker but statistically significant Spearman correlation (r = 0.27, p < 0.001), implying that more critically reviewed films may attract slightly more voter engagement. Popularity remains the weakest correlate: while the Spearman test achieves significance (p = 0.015), the correlation magnitude (r = 0.15) is negligible in practical terms.
+
+### Correlation Heatmap
+Figure 1 displays a Pearson correlation matrix across all four numerical variables.
+
+![Critic Score vs Vote Average](figures/correlation_heatmap.png)
+
+> Figure 1. Pearson correlation heatmap for critic score, audience score, popularity, and vote average. Cell values report the correlation coefficient (r) for each variable pair. Warmer colors indicate stronger positive correlations; darker colors indicate weaker correlations.
+
+The heatmap reveals a clear hierarchy of association strengths. The strongest correlation in the dataset is between **audience score and vote average (r = 0.82)**, indicating that the two audience-facing metrics capture closely related constructs. Critic score and audience score share a moderately strong relationship (r = 0.66), and critic score and vote average correlate at r = 0.57. In contrast, popularity correlates only weakly with all other variables — r = 0.11 with critic score, r = 0.17 with audience score, and r = 0.35 with vote average. This pattern suggests that popularity, as a measure of raw viewer volume, is driven by factors largely independent of ratings from either critics or general audiences.
+
 ### Distribution of Key Variables
- 
-[**Add summary statistics and/or distribution plots for `critic_score`, `popularity`, and `vote_count`. Note any skewness, outliers, or notable patterns.**]
- 
-### Visualizations
- 
-[**Embed or reference your plots here. Suggested plots (DO WATEVER U WANT HERE!):**
-- Scatter plot: `critic_score` vs `popularity`
-- Scatter plot: `critic_score` vs `vote_count`
-- Histogram: distribution of `critic_score` in the merged dataset
-- Histogram: distribution of `popularity`
-**Reference them as:** `![Description](path/to/figure.png)`]
- 
+Figure 2 presents histograms with kernel density estimates (KDE) for the four numerical variables: critic score, audience score, popularity, and vote average.
+
+![Distributions](figures/distributions.png)
+
+> Figure 2. Histograms with KDE curves for critic score, audience score, popularity, and vote average. Each plot shows the frequency distribution of films across the respective metric.
+
+Critic scores are broadly distributed across the **0–100 range** with a slight left skew and a concentration in the 70–90 range, suggesting most films that receive critical attention are reviewed somewhat favorably. Audience scores display a more pronounced left skew, with the majority of films clustered in the **60–90 range**, indicating that audiences tend to rate films higher on average than critics. The popularity variable is heavily **right-skewed**, which is a pattern consistent with a "long tail" distribution typical of media consumption data. Vote averages follow a **near-normal distribution**, concentrated between 6 and 7, with very few films receiving extreme ratings at either end.
+
+### Critic Score vs. Vote Average 
+Figure 3 shows a scatter plot of critic score against TMDB vote average, with a linear regression trend line overlaid.
+
+![Critic Score vs Vote Average](figures/critic_score_vote_avg_scatter.png)
+
+> Figure 3. Scatter plot of critic score (x-axis) versus vote average (y-axis), with a fitted OLS regression line and 95% confidence interval band. Each point represents an individual film.
+
+There is a clear **positive relationship** between the two variables: as critic scores increase, vote averages tend to rise as well. The regression line indicates a meaningful but moderate relationship. Substantial scatter around the trend line indicates that critic scores alone do not fully determine audience ratings. Many films with moderate critic scores achieve high vote averages, and vice versa. Nevertheless, the overall directional relationship is consistent and statistically robust (Pearson r = 0.57, p < 0.001).
+
+### Critic Score vs. Popularity
+Figure 4 examines whether critical acclaim translates into viewership, as proxied by the popularity metric.
+
+![Critic Score vs Vote Average](figures/critic_score_popularity_scatter.png)
+
+> Figure 4. Scatter plot of critic score (x-axis) versus popularity score (y-axis), with an OLS regression line and 95% confidence interval. Popularity is highly right-skewed, with most films clustered near the bottom of the y-axis.
+
+The relationship between critic score and popularity is **very weak**. The regression line is nearly flat, and the confidence interval remains narrow, reflecting very little predictive power. A single outlier stands out, which is a film scoring near 100 on the critic scale and has a popularity score 35. Outside of this outlier, the data shows no appreciable upward trend. The Pearson r of 0.11 (p = 0.089) fails to reach conventional significance thresholds, and even the Spearman correlation (r = 0.15, p = 0.015) represents a negligible effect size. This suggests that critical scores have minimal influence on the number of people engaging with a film.
+
+### Spread and Outliers in Critic Scores
+Figure 5 provides a boxplot summarizing the central tendency, spread, and outliers within the critic score distribution.
+
+![Critic Score vs Vote Average](figures/critic_score_box_plots.png)
+
+> Figure 5. Boxplot of critic scores. The box spans the interquartile range (IQR, Q1–Q3), the central line represents the median, and whiskers extend to 1.5× IQR. Circles indicate outlier observations.
+
+The interquartile range spans approximately 58 to 87, confirming that the middle 50% of films cluster in the upper half of the 0–100 scale. The median sits near 75, reinforcing the observation that critics tend to rate most reviewed films favorably. Three low-scoring outliers (below 10) are visible on the lower end, representing films that received exceptionally harsh critical assessments while still appearing in the dataset. The right whisker extends to the maximum value of 100, with no upper outliers, indicating that perfect critic scores are not statistically unusual given the overall distribution.
+
 ### Key Takeaways
- 
-[**Write 3–5 bullet points summarizing what the data shows with respect to our two research questions.**]
+Taken together, the findings from this analysis yield three conclusions regarding the research question — Do Critics Matter?
+
+**1. Critics and Audiences Largely Agree.** Critic scores are meaningfully associated with how audiences rate films. Films that critics praise tend to earn higher viewer ratings, and films that score low among critics tend to score lower with audiences as well. In this sense, critics and audiences are broadly aligned.
+
+**2. Critics Do Not Drive Viewership.** Despite the alignment in quality ratings, critic scores have little to no influence on a film's popularity. The near-zero correlation between critic score and popularity indicates that critical acclaim is insufficient for a film to achieve large-scale viewership. Other factors, such as appeal, marketing budgets, franchise recognition, and audience demographics appear to play a more important role in driving popularity than critical assessment.
+
+**3. Popularity Follows a "Long Tail" Dynamic.** A small number of films attract disproportionate attention regardless of critical merit, while the vast majority of even well-reviewed films attract modest audiences. This winner-takes-all dynamic is consistent with known patterns in media consumption.
+
+In summary, critics matter for quality perception, but critics do not matter for popularity. Whether a film becomes widely watched is determined by forces that operate largely independently of critical evaluation. 
  
 ---
  
 ## Future Work [**(Harlow - Ờm I lowkey need ur help here, please change or edit whatever sounds weird)**]
- 
+
+Future work could investigate the role of genre, release platform, marketing spend, and franchise status as moderating variables in the critic score–popularity relationship.
+
 This project represents a focused first pass at understanding the critic score–popularity relationship using a limited but clean dataset. Several directions would meaningfully extend its scope and rigor.
  
 **Broader temporal coverage.** The most significant limitation is that the merged dataset covers only 1970–1973 films. This arose because `acquire_tmdb.py` iterates from the top of the RT dataset, which is chronologically sorted. A future iteration should either shuffle the RT titles before fetching, or target a stratified sample across decades, to produce a dataset spanning the full 1970–present range of the RT source. This would make decade-level trend analysis — one of our original research questions — actually feasible.

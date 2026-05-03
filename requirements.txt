@@ -8,3 +8,4 @@ seaborn
 matplotlib
 numpy
 scipy.stats
+dataframe_image
