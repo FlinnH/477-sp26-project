@@ -394,8 +394,8 @@ datasets/
  
 - Rotten Tomatoes movie scores dataset, shared by community contributor on r/datasets (Reddit). Retrieved from: [https://www.reddit.com/r/datasets/](https://www.reddit.com/r/datasets/). Original data Fandango Media / Rotten Tomatoes. Used for non-commercial educational purposes only.
 - The Movie Database (TMDB) API v3. The Movie Database. [https://www.themoviedb.org/](https://www.themoviedb.org/). This product uses the TMDB API but is not endorsed or certified by TMDB.
+
 **Software and Libraries:**
- 
 - Python Software Foundation. *Python Language Reference*, version 3.x. [https://www.python.org/](https://www.python.org/)
 - McKinney, W. et al. *pandas: powerful Python data analysis toolkit*. [https://pandas.pydata.org/](https://pandas.pydata.org/)
 - *Requests: HTTP for Humans*. [https://requests.readthedocs.io/](https://requests.readthedocs.io/)
@@ -404,4 +404,4 @@ datasets/
 
 **Course Materials:**
 - IS477: Data Management, Curation, and Reproducibility. School of Information Sciences, University of Illinois Urbana-Champaign.
-- USGS Science Data Lifecycle Model. U.S. Geological Survey. [https://www.usgs.gov/data-management/data-lifecycle](https://www.usgs.gov/data-management/data-lifecycle)
+- USGS Science Data Lifecycle Model. U.S. Geological Survey. 
