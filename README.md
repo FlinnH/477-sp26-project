@@ -404,4 +404,4 @@ datasets/
 
 **Course Materials:**
 - IS477: Data Management, Curation, and Reproducibility. School of Information Sciences, University of Illinois Urbana-Champaign.
-- USGS Science Data Lifecycle Model. U.S. Geological Survey. [https://www.usgs.gov/data-management/data-lifecycle](https://www.usgs.gov/media/images/usgs-science-data-lifecycle-model)
+- USGS Science Data Lifecycle Model. U.S. Geological Survey. [https://www.usgs.gov/media/images/usgs-science-data-lifecycle-model](https://www.usgs.gov/media/images/usgs-science-data-lifecycle-model)
