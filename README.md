@@ -2,29 +2,29 @@
 
 ## Contributors
 
-- **Flynn Huynh** (fhuynh2) — Data acquisition, data cleaning, data integration, pipeline automation, Git repository management
-- **Harlow Nguyen** (harlown2) — Data quality assessment, exploratory data analysis, visualizations, and finalize our write-up
+- **Flynn Huynh** (fhuynh2) - Data acquisition, data cleaning, data integration, pipeline automation, Git repository management
+- **Harlow Nguyen** (harlown2) - Data quality assessment, exploratory data analysis, visualizations, and finalize our write-up
 
 ---
 
 ## Summary
 
-We believe film critics have long held an outsized influence over how movies are marketed and perceived by the public. Yet it remains unclear whether critical acclaim from them can reliably translate into a movie's broader popularity — the kind measured by public engagement rather than award recognition. Our project wishes to investigate whether critic scores are a meaningful predictor of movie popularity, using two complementary datasets: a Rotten Tomatoes dataset containing critic and audience scores sourced from r/datasets, and enriched movie metadata fetched live from The Movie Database (TMDB) REST API.
+We believe film critics have long held an outsized influence over how movies are marketed and perceived by the public. Yet it remains unclear whether critical acclaim from them can reliably translate into a movie's broader popularity - the kind measured by public engagement rather than award recognition. Our project wishes to investigate whether critic scores are a meaningful predictor of movie popularity, using two complementary datasets: a Rotten Tomatoes dataset containing critic and audience scores sourced from r/datasets, and enriched movie metadata fetched live from The Movie Database (TMDB) REST API.
 
 Our central research questions are:
 
 1. **Is there a statistically meaningful correlation between a movie's critic score and its TMDB popularity score?**
 2. **Do critically acclaimed movies (high critic score) tend to have higher vote counts and popularity, or does popularity operate independently of critical reception?**
 
-To answer these questions, we built a fully automated end-to-end data pipeline covering acquisition, cleaning, integration, and analysis. The Rotten Tomatoes dataset provides `critic_score` and `audience_score` as percentage values across 12,413 movies spanning approximately 1970 to the present. The TMDB API provides `popularity`, `vote_count`, and `vote_average` — three distinct proxies for public engagement — for 700 matched movies fetched by querying RT titles against the TMDB `/search/movie` endpoint.
+To answer these questions, we built a fully automated end-to-end data pipeline covering acquisition, cleaning, integration, and analysis. The Rotten Tomatoes dataset provides `critic_score` and `audience_score` as percentage values across 12,413 movies spanning approximately 1970 to the present. The TMDB API provides `popularity`, `vote_count`, and `vote_average` - three distinct proxies for public engagement - for 700 matched movies fetched by querying RT titles against the TMDB `/search/movie` endpoint.
 
-After cleaning both datasets — parsing inconsistent date formats, stripping percentage strings, normalizing titles, and deduplicating — we performed an inner join on normalized title and release year, producing a merged dataset of roughly **256 movies** with complete data across all key variables. The merged dataset covers films mostly from 1970 to 1973, a scope that arose from the sequential structure of the RT dataset and is documented as a known limitation.
+After cleaning both datasets - parsing inconsistent date formats, stripping percentage strings, normalizing titles, and deduplicating - we performed an inner join on normalized title and release year, producing a merged dataset of roughly **256 movies** with complete data across all key variables. The merged dataset covers films mostly from 1970 to 1973, a scope that arose from the sequential structure of the RT dataset and is documented as a known limitation.
 
 > ***NOTE: There will be a different number of movies depending on when you run the script, since the TMDB database changes over time as more movies are added***
 
 The project follows the USGS Science Data Lifecycle model: Plan -> Acquire -> Process -> Analyze -> Preserve -> Publish/Share. All code is organized into discrete, single-responsibility Python scripts (`acquire_rt.py`, `acquire_tmdb.py`, `clean.py`, `integrate.py`) in the `scripts` folder, chained together by `run_pipeline.sh`, enabling full reproducibility from a clean environment with a single command. We maintained Data Provenance by preserving raw inputs unmodified and logging all transformation decisions with row counts at each stage.
 
-[**Harlow — b nhớ điền khoảng 2–3 sentence summary of the key findings from your EDA here once analysis is complete.**]
+[**Harlow - b nhớ điền khoảng 2–3 sentence summary of the key findings from your EDA here once analysis is complete.**]
 
 ---
 
@@ -63,7 +63,7 @@ The project follows the USGS Science Data Lifecycle model: Plan -> Acquire -> Pr
  
 | Attribute | Value |
 |---|---|
-| Source | [The Movie Database (TMDB)](https://www.themoviedb.org/) — REST API v3 |
+| Source | [The Movie Database (TMDB)](https://www.themoviedb.org/) - REST API v3 |
 | Format | JSON (fetched via API) -> CSV (saved by acquisition script) |
 | Access method | HTTP REST API, `/search/movie` endpoint, registered API key required |
 | Raw size | 700 rows × 7 columns |
@@ -83,7 +83,7 @@ The project follows the USGS Science Data Lifecycle model: Plan -> Acquire -> Pr
 | `popularity` | Float | TMDB composite popularity score (page views, watchlist additions, rating activity) |
 | `overview` | String | Short plot summary from TMDB |
  
-**Relevance to research questions:** `popularity` and `vote_count` serve as the primary dependent variables — proxies for public reach and audience engagement. `vote_average` provides an additional comparison point alongside `critic_score`.
+**Relevance to research questions:** `popularity` and `vote_count` serve as the primary dependent variables - proxies for public reach and audience engagement. `vote_average` provides an additional comparison point alongside `critic_score`.
  
 **Ethical and legal considerations:** Data is collected in compliance with the [TMDB Terms of Use](https://www.themoviedb.org/terms-of-use), which permits non-commercial and educational use with attribution. Attribution is provided in the References section. The API key is stored securely in a local `.env` file and is never committed to the repository; a `.env.example` placeholder is committed instead. No personal data is involved in any TMDB API response used by this project. Flynn has added a `time.sleep(0.25)` delay between requests to comply with TMDB's rate limits (~40 requests/10 seconds).
  
@@ -140,7 +140,7 @@ The merge uses `pandas.merge()` with `how='inner'`, producing only rows where bo
  
 **Key quality limitation:** The merged dataset is constrained to 1970–1973 because `acquire_tmdb.py` fetches records by iterating from the top of the RT dataset, which is sorted chronologically. This limits temporal generalizability and is documented as a known scope limitation.
  
-[**Harlow — please add any additional quality observations from your EDA here, e.g. outlier findings in `popularity` or `critic_score` distributions, skewness, or any anomalies you noticed during analysis.**]
+[**Harlow - please add any additional quality observations from your EDA here, e.g. outlier findings in `popularity` or `critic_score` distributions, skewness, or any anomalies you noticed during analysis.**]
  
 ---
  
@@ -150,13 +150,13 @@ All cleaning is implemented in `clean.py` and operates on both raw datasets inde
  
 ### Rotten Tomatoes Cleaning Steps
  
-**1. Score parsing — stripping `%` and casting to numeric**
+**1. Score parsing - stripping `%` and casting to numeric**
  
 `critic_score` and `audience_score` were stored as strings with a `%` suffix (e.g., `"84%"`). These were cleaned by stripping the `%` character with `str.replace()` and casting to float using `pd.to_numeric(..., errors='coerce')`. The `errors='coerce'` argument safely converts any remaining non-numeric values to `NaN` rather than raising an error, preserving pipeline stability.
  
 **2. Release year extraction**
  
-The `release_date` column used two inconsistent formats — `"Released Dec 16, 1970"` and bare `"1970"` — making standard `pd.to_datetime()` parsing unreliable. A regex pattern `\b(19|20)\d{2}\b` was applied to extract the 4-digit year from either format, stored in a new `release_year` column (integer). Rows where no year could be extracted were treated as missing.
+The `release_date` column used two inconsistent formats - `"Released Dec 16, 1970"` and bare `"1970"` - making standard `pd.to_datetime()` parsing unreliable. A regex pattern `\b(19|20)\d{2}\b` was applied to extract the 4-digit year from either format, stored in a new `release_year` column (integer). Rows where no year could be extracted were treated as missing.
  
 **3. Title normalization**
  
@@ -168,7 +168,7 @@ Rows missing `critic_score`, `release_year`, or `title_clean` were dropped since
  
 **5. Deduplication**
  
-After dropping missing values, 1,194 duplicate rows remained (same `title_clean` + `release_year`). These were resolved by sorting on `critic_score` descending and keeping only the first occurrence — i.e., the entry with the highest critic score per movie. This avoids data loss and ensures the most informative entry is retained.
+After dropping missing values, 1,194 duplicate rows remained (same `title_clean` + `release_year`). These were resolved by sorting on `critic_score` descending and keeping only the first occurrence - i.e., the entry with the highest critic score per movie. This avoids data loss and ensures the most informative entry is retained.
  
 **Final RT clean shape: 8,105 rows × 7 columns**
  
@@ -222,7 +222,7 @@ Figure 1 displays a Pearson correlation matrix across all four numerical variabl
 
 > Figure 1. Pearson correlation heatmap for critic score, audience score, popularity, and vote average. Cell values report the correlation coefficient (r) for each variable pair. Warmer colors indicate stronger positive correlations; darker colors indicate weaker correlations.
 
-The heatmap reveals a clear hierarchy of association strengths. The strongest correlation in the dataset is between **audience score and vote average (r = 0.82)**, indicating that the two audience-facing metrics capture closely related constructs. Critic score and audience score share a moderately strong relationship (r = 0.66), and critic score and vote average correlate at r = 0.57. In contrast, popularity correlates only weakly with all other variables — r = 0.11 with critic score, r = 0.17 with audience score, and r = 0.35 with vote average. This pattern suggests that popularity, as a measure of raw viewer volume, is driven by factors largely independent of ratings from either critics or general audiences.
+The heatmap reveals a clear hierarchy of association strengths. The strongest correlation in the dataset is between **audience score and vote average (r = 0.82)**, indicating that the two audience-facing metrics capture closely related constructs. Critic score and audience score share a moderately strong relationship (r = 0.66), and critic score and vote average correlate at r = 0.57. In contrast, popularity correlates only weakly with all other variables - r = 0.11 with critic score, r = 0.17 with audience score, and r = 0.35 with vote average. This pattern suggests that popularity, as a measure of raw viewer volume, is driven by factors largely independent of ratings from either critics or general audiences.
 
 ### Distribution of Key Variables
 Figure 2 presents histograms with kernel density estimates (KDE) for the four numerical variables: critic score, audience score, popularity, and vote average.
@@ -261,7 +261,7 @@ Figure 5 provides a boxplot summarizing the central tendency, spread, and outlie
 The interquartile range spans approximately 58 to 87, confirming that the middle 50% of films cluster in the upper half of the 0–100 scale. The median sits near 75, reinforcing the observation that critics tend to rate most reviewed films favorably. Three low-scoring outliers (below 10) are visible on the lower end, representing films that received exceptionally harsh critical assessments while still appearing in the dataset. The right whisker extends to the maximum value of 100, with no upper outliers, indicating that perfect critic scores are not statistically unusual given the overall distribution.
 
 ### Key Takeaways
-Taken together, the findings from this analysis yield three conclusions regarding the research question — Do Critics Matter?
+Taken together, the findings from this analysis yield three conclusions regarding the research question - Do Critics Matter?
 
 **1. Critics and Audiences Largely Agree.** Critic scores are meaningfully associated with how audiences rate films. Films that critics praise tend to earn higher viewer ratings, and films that score low among critics tend to score lower with audiences as well. In this sense, critics and audiences are broadly aligned.
 
@@ -279,11 +279,11 @@ Future work could investigate the role of genre, release platform, marketing spe
 
 Our project represents a focused first pass at understanding the critic score–popularity relationship using a limited but clean dataset. Several directions would meaningfully extend its scope and rigor.
  
-**Broader temporal coverage.** The most significant limitation we noticed is that the merged dataset covers mostly 1970–1973 films. This arose because `acquire_tmdb.py` iterates from the top of the RT dataset, which is chronologically sorted. A future iteration should either shuffle the RT titles before fetching, or target a stratified sample across decades, to produce a dataset spanning the full 1970–present range of the RT source. This would make decade-level trend analysis — one of our original research questions — actually feasible.
+**Broader temporal coverage.** The most significant limitation we noticed is that the merged dataset covers mostly 1970–1973 films. This arose because `acquire_tmdb.py` iterates from the top of the RT dataset, which is chronologically sorted. A future iteration should either shuffle the RT titles before fetching, or target a stratified sample across decades, to produce a dataset spanning the full 1970–present range of the RT source. This would make decade-level trend analysis - one of our original research questions - actually feasible.
  
 **Fuzzy title matching.** The current integration strategy uses exact normalized title matching, which fails for titles that differ in more substantive ways (e.g., foreign language versions, subtitles, or sequels with slight name variations). Implementing fuzzy matching using the `recordlinkage` library or Levenshtein distance would increase the match rate and reduce selection bias toward movies with clean, consistent naming.
  
-**Richer TMDB features.** The `/search/movie` endpoint returns only summary fields. The `/movie/{id}` detail endpoint provides budget, revenue, runtime, and spoken language data, which would enable more sophisticated analysis — for example, whether big-budget films show a different critic–popularity relationship than low-budget ones.
+**Richer TMDB features.** The `/search/movie` endpoint returns only summary fields. The `/movie/{id}` detail endpoint provides budget, revenue, runtime, and spoken language data, which would enable more sophisticated analysis - for example, whether big-budget films show a different critic–popularity relationship than low-budget ones.
  
 **Automated provenance logging.** Currently, provenance is captured through terminal print statements and documentation. A more rigorous approach would log input file checksums (SHA-256), row counts at each pipeline stage, and transformation decisions to a structured JSON log file, creating a machine-readable audit trail alongside the human-readable report.
  
@@ -291,13 +291,13 @@ Our project represents a focused first pass at understanding the critic score–
  
 ## Challenges
  
-**Inconsistent `release_date` formats in the RT dataset.** The `release_date` column used two coexisting formats — `"Released Dec 16, 1970"` and a bare year `"1970"` — with no consistent separator. Standard `pd.to_datetime()` failed on both. This was resolved with a regex extractor targeting any 4-digit year matching `(19|20)\d{2}`, which handled both formats robustly without hard-coding format strings.
+**Inconsistent `release_date` formats in the RT dataset.** The `release_date` column used two coexisting formats - `"Released Dec 16, 1970"` and a bare year `"1970"` - with no consistent separator. Standard `pd.to_datetime()` failed on both. This was resolved with a regex extractor targeting any 4-digit year matching `(19|20)\d{2}`, which handled both formats robustly without hard-coding format strings.
  
 **Duplicate entries from the RT dataset are propagating into TMDB fetches.** The RT dataset contains multiple rows for many movies (e.g., *The Aristocats* appears several times with and without scores, *The French Connection* appears four times). Because `acquire_tmdb.py` iterates over every row, these duplicates resulted in 101 repeated TMDB records in the raw fetch output. This required a two-stage deduplication strategy: RT duplicates resolved by retaining the highest `critic_score` per title+year, and TMDB duplicates resolved by deduplicating on `id`.
  
-**Score columns stored as non-numeric strings.** `critic_score` and `audience_score` were stored as strings with a `%` suffix. While straightforward to fix once identified, this meant that initial attempts to compute statistics or correlations on the raw data silently failed or produced string-sorting behavior rather than numeric comparisons. The fix — `str.replace('%', '').astype(float)` with `errors='coerce'` — is now encapsulated in `clean.py`.
+**Score columns stored as non-numeric strings.** `critic_score` and `audience_score` were stored as strings with a `%` suffix. While straightforward to fix once identified, this meant that initial attempts to compute statistics or correlations on the raw data silently failed or produced string-sorting behavior rather than numeric comparisons. The fix - `str.replace('%', '').astype(float)` with `errors='coerce'` - is now encapsulated in `clean.py`.
  
-**Merged dataset predominantly limited to 1970–1973.** Because the TMDB fetch starts from row 0 of the RT dataset (sorted chronologically), 233 of 256 merged records cover films from 1970–1973. An additional 23 rows from scattered other years (1955–2022) appeared due to TMDB returning a different year's version of a matched title — a known side effect of title-only search queries. This limits temporal generalizability and is documented as a known scope limitation.
+**Merged dataset predominantly limited to 1970–1973.** Because the TMDB fetch starts from row 0 of the RT dataset (sorted chronologically), 233 of 256 merged records cover films from 1970–1973. An additional 23 rows from scattered other years (1955–2022) appeared due to TMDB returning a different year's version of a matched title - a known side effect of title-only search queries. This limits temporal generalizability and is documented as a known scope limitation.
  
 **API key security and reproducibility tension.** The TMDB API requires a registered key that cannot be committed to the repository. This creates a reproducibility gap: the pipeline cannot run without a key, but the key cannot be shared. This was resolved through the `.env` + `.env.example` pattern, with clear instructions in this README for obtaining a free key. The Google Drive download strategy for the RT dataset similarly resolves the reproducibility gap for that source.
  
@@ -319,7 +319,7 @@ Follow these steps to reproduce the full pipeline from a clean environment.
 2. Log in and navigate to **Settings -> API** ([direct link](https://www.themoviedb.org/settings/api))
 3. Click **"Request an API Key"** and select **"Developer"**
 4. Fill in the required form (project name: e.g. "IS477 Course Project", ...)
-5. Your **API Key (v3 auth)** will be displayed — copy it
+5. Your **API Key (v3 auth)** will be displayed - copy it
 ### Step 2: Clone the Repository
  
 ```bash
@@ -373,7 +373,7 @@ This will execute the following steps in order:
 | 4 | `scripts/integrate.py` | Both cleaned CSVs | `datasets/merged_movies.csv` |
 | 5 | `analysis.ipynb` (via `nbconvert`) | `datasets/merged_movies.csv` | Figures and analysis results |
  
-> **Note on runtime:** Step 2 (TMDB acquisition) fetches 700 records with a 0.25s delay between requests. Expect approximately 3–5 minutes to complete. Step 5 requires `jupyter` — the pipeline warns and skips gracefully if not found, in which case run the notebook manually with `jupyter notebook analysis.ipynb`.
+> **Note on runtime:** Step 2 (TMDB acquisition) fetches 700 records with a 0.25s delay between requests. Expect approximately 3–5 minutes to complete. Step 5 requires `jupyter` - the pipeline warns and skips gracefully if not found, in which case run the notebook manually with `jupyter notebook analysis.ipynb`.
  
 ### Expected Output Files
  
