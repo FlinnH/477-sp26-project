@@ -20,11 +20,9 @@ To answer these questions, we built a fully automated end-to-end data pipeline c
 
 After cleaning both datasets - parsing inconsistent date formats, stripping percentage strings, normalizing titles, and deduplicating - we performed an inner join on normalized title and release year, producing a merged dataset of roughly **256 movies** with complete data across all key variables. The merged dataset covers films mostly from 1970 to 1973, a scope that arose from the sequential structure of the RT dataset and is documented as a known limitation.
 
-> ***NOTE: There will be a different number of movies depending on when you run the script, since the TMDB database changes over time as more movies are added***
+> ***NOTE: There will be a different number of movies depending on when you run the script, since the TMDB database changes over time as more movies are added, our dataset fetching was done on April 16th, 2026***
 
 The project follows the USGS Science Data Lifecycle model: Plan -> Acquire -> Process -> Analyze -> Preserve -> Publish/Share. All code is organized into discrete, single-responsibility Python scripts (`acquire_rt.py`, `acquire_tmdb.py`, `clean.py`, `integrate.py`) in the `scripts` folder, chained together by `run_pipeline.sh`, enabling full reproducibility from a clean environment with a single command. We maintained Data Provenance by preserving raw inputs unmodified and logging all transformation decisions with row counts at each stage.
-
-[**Harlow - b nhớ điền khoảng 2–3 sentence summary of the key findings from your EDA here once analysis is complete.**]
 
 ---
 
